@@ -14,3 +14,67 @@ const transporter = nodemailer.createTransport({
       pass: nodePass,
     },
 });
+
+module.exports.orderService = {
+    createOrder: async function(ref, price, cartItems){
+        try{
+            const cart = new Cart({
+                OrderID: ref,
+                OrderedItems: cartItems,
+                Price: price,
+                Status: "Pending"
+            });
+            await cart.save();
+        }
+        catch(error){
+            console.error(error);
+        }
+    },
+
+
+    sendOrder: async function(ref, email){
+        try{
+            //Update order status to Success
+            await Cart.findOneAndUpdate({OrderID: ref},{Status: "Success"})
+            .then(function(response){
+                console.log(response);
+            })
+            .catch(function(err){
+                console.error(err);
+            });
+            //Return order from db
+            await Cart.findOne({OrderID: ref})
+            .then(function(response){   
+                const mailBody = JSON.stringify(response);
+                //Nodemailer Options
+                const mailOptions = {
+                    from: {
+                        address: myMail
+                    },
+                    to: [email, myMail],
+                    subject: "Cool Cicks Order Confirmation",
+                    text: mailBody
+                };
+
+                //Send email  
+                const sendMail = async (transporter, mailOptions) =>{
+                    try{
+                        await transporter.sendMail(mailOptions);
+                    }
+                    catch(err){
+                        console.error(err);
+                    }
+                }
+                sendMail(transporter, mailOptions);
+            })
+            .catch(function(err){
+                console.error(err);
+            });
+                
+        }
+        catch(error){
+            console.error(error);
+        }
+    }
+
+}
