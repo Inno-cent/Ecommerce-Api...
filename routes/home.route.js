@@ -7,3 +7,4 @@ homeRouter.get('/', (req, res) =>{
     res.sendFile(__dirname + "index");
 });
 
+module.exports = homeRouter;
