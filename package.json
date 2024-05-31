@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axois": "0.0.1-security"
+    "axois": "0.0.1-security",
+    "express": "^4.19.2",
+    "mongoose": "^8.4.0"
   }
 }
