@@ -33,45 +33,45 @@ module.exports.orderService = {
 
 
     sendOrder: async function(ref, email){
-        // try{
-        //     //Update order status to Success
-        //     await Cart.findOneAndUpdate({OrderID: ref},{Status: "Success"})
-        //     .then(function(response){
-        //         console.log(response);
-        //     })
-        //     .catch(function(err){
-        //         console.error(err);
-        //     });
-        //     //Return order from db
-        //     await Cart.findOne({OrderID: ref})
-        //     .then(function(response){   
-        //         const mailBody = JSON.stringify(response);
-        //         //Nodemailer Options
-        //         const mailOptions = {
-        //             from: {
-        //                 address: myMail
-        //             },
-        //             to: [email, myMail],
-        //             subject: "Cool Cicks Order Confirmation",
-        //             text: mailBody
-        //         };
+        try{
+            //Update order status to Success
+            await Cart.findOneAndUpdate({OrderID: ref},{Status: "Success"})
+            .then(function(response){
+                console.log(response);
+            })
+            .catch(function(err){
+                console.error(err);
+            });
+            //Return order from db
+            await Cart.findOne({OrderID: ref})
+            .then(function(response){   
+                const mailBody = JSON.stringify(response);
+                //Nodemailer Options
+                const mailOptions = {
+                    from: {
+                        address: myMail
+                    },
+                    to: [email, myMail],
+                    subject: "Cool Cicks Order Confirmation",
+                    text: mailBody
+                };
 
-        //         //Send email  
-        //         const sendMail = async (transporter, mailOptions) =>{
-        //             try{
-        //                 await transporter.sendMail(mailOptions);
-        //             }
-        //             catch(err){
-        //                 console.error(err);
-        //             }
-        //         }
-        //         sendMail(transporter, mailOptions);
-        //     })
-        //     .catch(function(err){
-        //         console.error(err);
-        //     });
+                //Send email  
+                const sendMail = async (transporter, mailOptions) =>{
+                    try{
+                        await transporter.sendMail(mailOptions);
+                    }
+                    catch(err){
+                        console.error(err);
+                    }
+                }
+                sendMail(transporter, mailOptions);
+            })
+            .catch(function(err){
+                console.error(err);
+            });
                 
-        // }
+        }
         catch(error){
             console.error(error);
         }
